@@ -1,0 +1,24 @@
+/* Easy Theme Switcher - Theme files */
+/* Import your theme files here */
+@use 'themes/light';
+@use 'themes/dark';
+
+/* Global resets */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: var(--ets-bg);
+  color: var(--ets-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
