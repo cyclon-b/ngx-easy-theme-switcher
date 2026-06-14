@@ -1,5 +1,8 @@
 # NGX Easy Theme Switcher
 
+[![npm version](https://img.shields.io/npm/v/ngx-easy-theme-switcher)](https://www.npmjs.com/package/ngx-easy-theme-switcher)
+[![Angular](https://img.shields.io/badge/Angular-21.2+-red)](https://angular.dev)
+
 Angular library for easy theme switching (light/dark) with customizable toggle icons.
 
 ## Features
@@ -9,6 +12,8 @@ Angular library for easy theme switching (light/dark) with customizable toggle i
 - **Customizable icon** — default FontAwesome, with support for any icon font or custom SVG
 - **Standalone** — compatible with Angular standalone components
 - **Minimal** — just a service and a toggle component
+- **Angular 21** — built and tested with Angular 21.2+
+- **Tested** — unit tests (Jasmine + Karma) and e2e tests (Playwright)
 
 ## Installation
 
@@ -201,8 +206,28 @@ this.themeService.currentTheme$.subscribe(theme => {
 | `lightIcon` | `'fa-sun'`   | Icon name/class for the first theme      |
 | `darkIcon`  | `'fa-moon'`  | Icon name/class for the second theme     |
 
+## Testing
+
+```bash
+# Unit tests (library)
+npm run test:lib
+
+# Unit tests (demo app)
+npm run test:app
+
+# All unit tests in CI mode (single run, headless)
+npm run test:ci
+
+# E2E tests (Playwright)
+npm run e2e
+```
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for the full release history.
+
 ## License
 
-Copyright (c) 2024 **Gennady Artamonov**
+Copyright (c) 2026 **Gennady Artamonov**
 
 All use is free. Redistribution or resale of the library itself as a paid product is prohibited. See [LICENSE.md](./LICENSE.md) for full terms.

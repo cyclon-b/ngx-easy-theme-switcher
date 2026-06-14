@@ -1,25 +1,37 @@
 {
   "name": "ngx-easy-theme-switcher",
-  "version": "1.0.0",
-  "description": "Angular library for easy theme switching with customizable toggle icon support",
+  "version": "1.1.0",
+  "description": "A lightweight Angular service and component for seamless dark/light theme switching. Supports FontAwesome, Material Icons, Bootstrap Icons, custom SVG icons, and popular icon fonts out of the box. Persistent theme selection with localStorage.",
   "keywords": [
     "angular",
     "theme",
+    "dark theme",
+    "utils",
+    "service",
+    "ng",
+    "typescript",
     "theme-switcher",
     "dark-mode",
     "light-mode",
     "themes",
-    "angular-library"
+    "angular-library",
+    "dark",
+    "light",
+    "toggle",
+    "icon",
+    "fontawesome",
+    "material-icons",
+    "bootstrap-icons"
   ],
   "author": "Gennady Artamonov",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/cyclon-b/ngx-easy-theme-switcher.git"
   },
   "peerDependencies": {
-    "@angular/common": "^19.2.0",
-    "@angular/core": "^19.2.0"
+    "@angular/common": "^21.2.0",
+    "@angular/core": "^21.2.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
