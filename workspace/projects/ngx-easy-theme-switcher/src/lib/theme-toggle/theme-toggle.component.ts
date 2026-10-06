@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 import { ThemeService } from '../theme.service';
 
@@ -15,6 +16,20 @@ export type IconFont =
   | 'pi'        // PrimeIcons
   | 'ion-icon'; // Ionicons
 
+/** Icon names used when `lightIcon` / `darkIcon` are not provided, per icon font. */
+const DEFAULT_ICONS: Record<IconFont, { light: string; dark: string }> = {
+  fas: { light: 'fa-sun', dark: 'fa-moon' },
+  far: { light: 'fa-sun', dark: 'fa-moon' },
+  fal: { light: 'fa-sun', dark: 'fa-moon' },
+  fab: { light: 'fa-sun', dark: 'fa-moon' },
+  'material-icons': { light: 'light_mode', dark: 'dark_mode' },
+  'material-icons-outlined': { light: 'light_mode', dark: 'dark_mode' },
+  'material-symbols-outlined': { light: 'light_mode', dark: 'dark_mode' },
+  bi: { light: 'bi-sun-fill', dark: 'bi-moon-fill' },
+  pi: { light: 'pi-sun', dark: 'pi-moon' },
+  'ion-icon': { light: 'sunny', dark: 'moon' },
+};
+
 @Component({
   selector: 'ets-theme-toggle',
   standalone: true,
@@ -26,8 +41,8 @@ export type IconFont =
       [attr.aria-label]="'Switch to ' + oppositeTheme + ' mode'"
       type="button"
     >
-      @if (svgIcon) {
-        <span class="ets-icon ets-icon--svg" [innerHTML]="svgIcon"></span>
+      @if (trustedSvg) {
+        <span class="ets-icon ets-icon--svg" [innerHTML]="trustedSvg"></span>
       } @else {
         <span
           class="ets-icon"
@@ -71,27 +86,44 @@ export type IconFont =
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeToggleComponent implements OnInit, OnDestroy {
-  /** Icon font abbreviation (e.g. 'fas', 'material-icons', 'bi') */
+  /** Icon font abbreviation (e.g. 'fas', 'material-icons', 'bi', 'pi') */
   @Input() iconFont?: IconFont;
 
-  /** Custom SVG markup (overrides iconFont if provided) */
-  @Input() svgIcon?: string;
+  /**
+   * Custom SVG markup (overrides iconFont if provided).
+   *
+   * The markup is inserted as-is, without HTML sanitization, so that inline
+   * `<svg>` elements are preserved. Never bind untrusted/user-provided markup here.
+   */
+  @Input()
+  set svgIcon(value: string | undefined) {
+    this.rawSvgIcon = value;
+    this.trustedSvg = value
+      ? this.sanitizer.bypassSecurityTrustHtml(value)
+      : null;
+  }
+  get svgIcon(): string | undefined {
+    return this.rawSvgIcon;
+  }
 
-  /** Icon name for the first theme (default light) */
+  /** Icon name for the first theme (default light), e.g. 'fa-sun' or 'pi-sun' */
   @Input() lightIcon?: string;
 
-  /** Icon name for the second theme (default dark) */
+  /** Icon name for the second theme (default dark), e.g. 'fa-moon' or 'pi-moon' */
   @Input() darkIcon?: string;
 
   protected oppositeTheme = '';
   protected iconClasses: Record<string, boolean> = {};
   protected displayIconText = '';
+  protected trustedSvg: SafeHtml | null = null;
 
+  private rawSvgIcon?: string;
   private destroy$ = new Subject<void>();
 
   constructor(
     private themeService: ThemeService,
     private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer,
   ) {}
 
   ngOnInit(): void {
@@ -119,11 +151,12 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
 
     this.oppositeTheme = currentTheme === lightTheme ? darkTheme : lightTheme;
 
-    const iconName = isLight
-      ? (this.darkIcon ?? 'fa-moon')
-      : (this.lightIcon ?? 'fa-sun');
-
     const font = this.iconFont ?? 'fas';
+    const defaults = DEFAULT_ICONS[font] ?? DEFAULT_ICONS.fas;
+
+    const iconName = isLight
+      ? (this.darkIcon ?? defaults.dark)
+      : (this.lightIcon ?? defaults.light);
 
     if (font.startsWith('material')) {
       this.iconClasses = { [font]: true };

@@ -79,6 +79,24 @@ describe('ThemeToggleComponent', () => {
     expect(svgSpan).toBeTruthy();
   });
 
+  it('should insert custom SVG markup as-is (not stripped by sanitizer)', () => {
+    fixture.componentRef.setInput(
+      'svgIcon',
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3v18"/></svg>'
+    );
+    fixture.detectChanges();
+    const svgSpan = fixture.nativeElement.querySelector('.ets-icon--svg');
+    expect(svgSpan.querySelector('svg')).toBeTruthy();
+    expect(svgSpan.querySelector('path')).toBeTruthy();
+  });
+
+  it('should fall back to the icon font when svgIcon is not set', () => {
+    fixture.componentRef.setInput('svgIcon', undefined);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.ets-icon--svg')).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('.ets-icon')).toBeTruthy();
+  });
+
   it('should use material icons classes when iconFont starts with material', () => {
     fixture.destroy();
     const newFixture = TestBed.createComponent(ThemeToggleComponent);
@@ -89,6 +107,46 @@ describe('ThemeToggleComponent', () => {
     const icon = newFixture.nativeElement.querySelector('.ets-icon');
     expect(icon.classList.contains('material-symbols-outlined')).toBeTrue();
     expect(icon.textContent).toBe('light_mode');
+    newFixture.destroy();
+  });
+
+  it('should use PrimeIcons defaults (pi-moon / pi-sun) when iconFont is pi', () => {
+    fixture.destroy();
+    const newFixture = TestBed.createComponent(ThemeToggleComponent);
+    newFixture.componentInstance.iconFont = 'pi';
+    newFixture.detectChanges();
+    let icon = newFixture.nativeElement.querySelector('.ets-icon');
+    expect(icon.classList.contains('pi')).toBeTrue();
+    expect(icon.classList.contains('pi-moon')).toBeTrue();
+
+    themeService.toggleTheme();
+    newFixture.detectChanges();
+    icon = newFixture.nativeElement.querySelector('.ets-icon');
+    expect(icon.classList.contains('pi')).toBeTrue();
+    expect(icon.classList.contains('pi-sun')).toBeTrue();
+    newFixture.destroy();
+  });
+
+  it('should let custom icon names override PrimeIcons defaults', () => {
+    fixture.destroy();
+    const newFixture = TestBed.createComponent(ThemeToggleComponent);
+    newFixture.componentInstance.iconFont = 'pi';
+    newFixture.componentInstance.darkIcon = 'pi-moon-custom';
+    newFixture.detectChanges();
+    const icon = newFixture.nativeElement.querySelector('.ets-icon');
+    expect(icon.classList.contains('pi-moon-custom')).toBeTrue();
+    expect(icon.classList.contains('pi-moon')).toBeFalse();
+    newFixture.destroy();
+  });
+
+  it('should use material defaults (dark_mode / light_mode) for material fonts', () => {
+    fixture.destroy();
+    const newFixture = TestBed.createComponent(ThemeToggleComponent);
+    newFixture.componentInstance.iconFont = 'material-icons';
+    newFixture.detectChanges();
+    const icon = newFixture.nativeElement.querySelector('.ets-icon');
+    expect(icon.classList.contains('material-icons')).toBeTrue();
+    expect(icon.textContent).toBe('dark_mode');
     newFixture.destroy();
   });
 

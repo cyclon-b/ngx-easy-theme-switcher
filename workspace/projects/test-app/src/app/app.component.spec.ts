@@ -38,17 +38,26 @@ describe('AppComponent', () => {
     );
   });
 
-  it('should render four demo cards', () => {
+  it('should render five demo cards', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const cards = fixture.nativeElement.querySelectorAll('.demo-card');
-    expect(cards.length).toBe(4);
+    expect(cards.length).toBe(5);
   });
 
   it('should contain theme-toggle components', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const toggles = fixture.nativeElement.querySelectorAll('ets-theme-toggle');
-    expect(toggles.length).toBeGreaterThanOrEqual(4);
+    expect(toggles.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it('should render PrimeIcons toggle with default pi-sun / pi-moon icons', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const primeCard = fixture.nativeElement.querySelectorAll('.demo-card')[4];
+    const icon = primeCard.querySelector('.ets-icon');
+    expect(icon.classList.contains('pi')).toBeTrue();
+    expect(icon.classList.contains('pi-moon')).toBeTrue();
   });
 });

@@ -12,9 +12,9 @@ test.describe('Theme Switcher Demo App', () => {
     await expect(page.locator('h1')).toHaveText('Easy Theme Switcher');
   });
 
-  test('should display all four demo cards', async ({ page }) => {
+  test('should display all five demo cards', async ({ page }) => {
     const cards = page.locator('.demo-card');
-    await expect(cards).toHaveCount(4);
+    await expect(cards).toHaveCount(5);
   });
 
   test('should have default light theme on load', async ({ page }) => {
@@ -115,5 +115,23 @@ test.describe('Theme Switcher Demo App', () => {
     const biCard = page.locator('.demo-card').nth(3);
     const icon = biCard.locator('.ets-icon');
     await expect(icon).toHaveClass(/bi/);
+  });
+
+  test('should render PrimeIcons demo with defaults', async ({ page }) => {
+    // The fifth demo card uses PrimeIcons with default pi-sun / pi-moon icons
+    const piCard = page.locator('.demo-card').nth(4);
+    const icon = piCard.locator('.ets-icon');
+    await expect(icon).toHaveClass(/pi/);
+    await expect(icon).toHaveClass(/pi-moon/);
+
+    // PrimeIcons font is actually loaded for the icon
+    const fontFamily = await icon.evaluate(
+      (el) => getComputedStyle(el).fontFamily
+    );
+    expect(fontFamily).toContain('primeicons');
+
+    // Icon switches to pi-sun in dark theme
+    await piCard.locator('.ets-toggle-btn').click();
+    await expect(icon).toHaveClass(/pi-sun/);
   });
 });

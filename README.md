@@ -1,7 +1,7 @@
 # NGX Easy Theme Switcher
 
 [![npm version](https://img.shields.io/npm/v/ngx-easy-theme-switcher)](https://www.npmjs.com/package/ngx-easy-theme-switcher)
-[![Angular](https://img.shields.io/badge/Angular-21.2+-red)](https://angular.dev)
+[![Angular](https://img.shields.io/badge/Angular-22.2+-red)](https://angular.dev)
 
 Angular library for easy theme switching (light/dark) with customizable toggle icons.
 
@@ -9,11 +9,16 @@ Angular library for easy theme switching (light/dark) with customizable toggle i
 
 - **Service-based** — inject `ThemeService` anywhere to programmatically get/set/toggle themes
 - **Persistent** — theme preference is saved in `localStorage`
-- **Customizable icon** — default FontAwesome, with support for any icon font or custom SVG
+- **Customizable icon** — default FontAwesome, with support for PrimeIcons, Bootstrap Icons, Material Icons/Symbols, Ionicons or custom SVG
 - **Standalone** — compatible with Angular standalone components
 - **Minimal** — just a service and a toggle component
-- **Angular 21** — built and tested with Angular 21.2+
+- **Angular 22** — built and tested with Angular 22.2+
 - **Tested** — unit tests (Jasmine + Karma) and e2e tests (Playwright)
+
+## Requirements
+
+- Angular 22.2+ (peer dependencies: `@angular/common`, `@angular/core`, `@angular/platform-browser`)
+- Node.js 22.22.3+, 24.15+ or 26+ (required by the Angular 22 build tooling)
 
 ## Installation
 
@@ -32,6 +37,9 @@ npm install material-symbols
 
 # Or for Bootstrap Icons
 npm install bootstrap-icons
+
+# Or for PrimeIcons
+npm install primeicons
 ```
 
 ## Quick Start
@@ -104,11 +112,14 @@ In any component template:
 
 ### Icon Fonts
 
-The toggle component supports various icon fonts via the `iconFont` input:
+The toggle component supports various icon fonts via the `iconFont` input. When `lightIcon` / `darkIcon` are not set, sensible defaults for the chosen font are used:
 
 ```html
 <!-- Default (FontAwesome Solid) -->
 <ets-theme-toggle />
+
+<!-- PrimeIcons (defaults to pi-sun / pi-moon) -->
+<ets-theme-toggle iconFont="pi" />
 
 <!-- Material Symbols -->
 <ets-theme-toggle
@@ -127,6 +138,27 @@ The toggle component supports various icon fonts via the `iconFont` input:
 
 Supported icon fonts: `fas`, `far`, `fal`, `fab`, `material-icons`, `material-icons-outlined`, `material-symbols-outlined`, `bi`, `pi`, `ion-icon`.
 
+Default icon names per font (used when `lightIcon` / `darkIcon` are omitted):
+
+| `iconFont`                                                              | `lightIcon`  | `darkIcon`   |
+|-------------------------------------------------------------------------|--------------|--------------|
+| `fas`, `far`, `fal`, `fab`                                              | `fa-sun`     | `fa-moon`    |
+| `material-icons`, `material-icons-outlined`, `material-symbols-outlined` | `light_mode` | `dark_mode`  |
+| `bi`                                                                    | `bi-sun-fill`| `bi-moon-fill`|
+| `pi`                                                                    | `pi-sun`     | `pi-moon`    |
+| `ion-icon`                                                              | `sunny`      | `moon`       |
+
+Class-based fonts (`fas`, `bi`, `pi`, …) receive two CSS classes — the font base class and the icon class, e.g. `pi pi-moon`, which is what PrimeIcons expects. Material fonts use ligatures instead, so the icon name is rendered as the element's text content.
+
+Remember to load the icon font stylesheet in your app. For PrimeIcons, add the stylesheet to `angular.json`:
+
+```json
+"styles": [
+  "node_modules/primeicons/primeicons.css",
+  "src/styles.scss"
+]
+```
+
 ### Custom SVG
 
 Pass any SVG markup as the `svgIcon` input:
@@ -140,6 +172,8 @@ mySvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" 
   <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9..."/>
 </svg>`;
 ```
+
+> **Security note:** the markup is inserted as-is, without Angular's HTML sanitization, so that inline `<svg>` elements survive. Never bind untrusted or user-provided markup to `svgIcon` — it is meant for icons authored in your own code.
 
 ### Custom Icon Names
 
@@ -199,12 +233,12 @@ this.themeService.currentTheme$.subscribe(theme => {
 
 ### `ThemeToggleComponent` Inputs
 
-| Input       | Default      | Description                              |
-|-------------|--------------|------------------------------------------|
-| `iconFont`  | `'fas'`      | Icon font abbreviation                   |
-| `svgIcon`   | —            | Custom SVG markup (overrides iconFont)   |
-| `lightIcon` | `'fa-sun'`   | Icon name/class for the first theme      |
-| `darkIcon`  | `'fa-moon'`  | Icon name/class for the second theme     |
+| Input       | Default                    | Description                              |
+|-------------|----------------------------|------------------------------------------|
+| `iconFont`  | `'fas'`                    | Icon font abbreviation                   |
+| `svgIcon`   | —                          | Custom SVG markup (overrides iconFont)   |
+| `lightIcon` | per font (see above)       | Icon name/class for the first theme      |
+| `darkIcon`  | per font (see above)       | Icon name/class for the second theme     |
 
 ## Testing
 

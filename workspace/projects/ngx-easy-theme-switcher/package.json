@@ -1,7 +1,7 @@
 {
   "name": "ngx-easy-theme-switcher",
-  "version": "1.1.0",
-  "description": "A lightweight Angular service and component for seamless dark/light theme switching. Supports FontAwesome, Material Icons, Bootstrap Icons, custom SVG icons, and popular icon fonts out of the box. Persistent theme selection with localStorage.",
+  "version": "1.2.0",
+  "description": "A lightweight Angular service and component for seamless dark/light theme switching. Supports FontAwesome, Material Icons, Bootstrap Icons, PrimeIcons, custom SVG icons, and popular icon fonts out of the box. Persistent theme selection with localStorage.",
   "keywords": [
     "angular",
     "theme",
@@ -21,7 +21,8 @@
     "icon",
     "fontawesome",
     "material-icons",
-    "bootstrap-icons"
+    "bootstrap-icons",
+    "primeicons"
   ],
   "author": "Gennady Artamonov",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -30,8 +31,9 @@
     "url": "https://github.com/cyclon-b/ngx-easy-theme-switcher.git"
   },
   "peerDependencies": {
-    "@angular/common": "^21.2.0",
-    "@angular/core": "^21.2.0"
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/platform-browser": "^22.2.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

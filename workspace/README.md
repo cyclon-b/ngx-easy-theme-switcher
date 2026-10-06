@@ -1,58 +1,67 @@
-# Workspace
+# NGX Easy Theme Switcher — workspace
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.27.
+Angular workspace containing the library and its demo application.
+
+## Projects
+
+| Project                  | Path                                 | Description                                              |
+|--------------------------|--------------------------------------|----------------------------------------------------------|
+| `ngx-easy-theme-switcher`| `projects/ngx-easy-theme-switcher`   | The published library (service + toggle component)        |
+| `test-app`               | `projects/test-app`                  | Demo application used for manual checks and e2e tests     |
+
+Library documentation: [projects/ngx-easy-theme-switcher/README.md](projects/ngx-easy-theme-switcher/README.md).
+
+## Requirements
+
+- Node.js 22.22.3+, 24.15+ or 26+ (required by Angular 22 tooling)
+- Angular 22.2+
 
 ## Development server
 
-To start a local development server, run:
+Run `npm start` (or `ng serve test-app`) for the demo app and open `http://localhost:4200/`. The application reloads automatically when source files change.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
+The demo app shows every supported icon font variant (FontAwesome, Material Icons, Bootstrap Icons, PrimeIcons) and a custom SVG icon. PrimeIcons is installed as a dependency and its stylesheet is wired up in `angular.json`, so that card renders real glyphs.
 
 ## Building
 
-To build the project run:
-
 ```bash
-ng build
+# Build the library into dist/ngx-easy-theme-switcher
+npm run build:lib
+
+# Build the demo app
+npm run build:app
+
+# Build both (library first, then the app)
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The demo app resolves `ngx-easy-theme-switcher` from `dist/`, so build the library before serving or testing the app.
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Unit tests run with [Karma](https://karma-runner.github.io):
 
 ```bash
-ng test
+npm run test:lib   # library tests
+npm run test:app   # demo app tests
+npm run test:ci    # both, single run, headless Chrome
 ```
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+E2E tests use [Playwright](https://playwright.dev); the config starts the demo app automatically:
 
 ```bash
-ng e2e
+npm run e2e
+npm run e2e:ui
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Code scaffolding
+
+```bash
+ng generate component component-name
+ng generate --help
+```
 
 ## Additional Resources
 

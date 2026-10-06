@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ThemeToggleComponent } from 'ngx-easy-theme-switcher';
 
 @Component({
@@ -46,9 +46,16 @@ import { ThemeToggleComponent } from 'ngx-easy-theme-switcher';
             darkIcon="bi-moon-fill"
           />
         </section>
+
+        <section class="demo-card">
+          <h2>PrimeIcons</h2>
+          <p>Uses PrimeIcons (<code>pi</code>) with default <code>pi-sun</code> / <code>pi-moon</code></p>
+          <ets-theme-toggle iconFont="pi" />
+        </section>
       </main>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .app-container {
       min-height: 100vh;
