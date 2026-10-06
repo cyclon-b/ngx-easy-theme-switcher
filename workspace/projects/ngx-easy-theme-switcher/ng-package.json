@@ -3,5 +3,9 @@
   "dest": "../../dist/ngx-easy-theme-switcher",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": [
+    "./CHANGELOG.md",
+    "./LICENSE.md"
+  ]
 }
